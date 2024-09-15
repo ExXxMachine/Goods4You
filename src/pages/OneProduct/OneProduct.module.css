@@ -124,7 +124,7 @@
     align-items: center;
 }
 
-/* Adaptabilidad */
+
 @media (max-width: 768px) {
     .productContainer {
         flex-direction: column;
