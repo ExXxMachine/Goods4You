@@ -15,13 +15,13 @@
     filter: invert(78%) sepia(81%) saturate(1568%) hue-rotate(346deg) brightness(101%) contrast(101%);
 }
 
-
+/* Adabtividad */
 @media (max-width: 768px) {
     .starRating {
-        width: 90px; 
+        width: 90px; /* Reducimos el ancho en dispositivos móviles */
     }
 
     .star {
-        font-size: 1.5rem; 
+        font-size: 1.5rem; /* Reducimos el tamaño de las estrellas en dispositivos móviles */
     }
 }
