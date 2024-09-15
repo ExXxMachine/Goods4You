@@ -1,0 +1,159 @@
+.headerContainer {
+	margin: 0;
+	width: 100%;
+	height: 90px;
+	display: flex;
+	justify-content: center;
+	background-color: #484283;
+}
+
+.navBlock {
+	width: 79%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-family: 'Jost', sans-serif;
+	color: white;
+}
+
+.logo {
+	font-weight: 700;
+	font-size: 30px;
+	color: white;
+}
+
+.navUl {
+	height: 100%;
+	width: 32.25%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	list-style-type: none;
+}
+
+.navLink {
+	color: white;
+	font-weight: 600;
+	font-size: 14px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+}
+
+.cartIcon {
+	position: relative;
+	display: inline-block;
+	margin-left: 6px;
+}
+
+.cartBadge {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+
+.navLink:hover {
+	color: #d5d5d5;
+	text-decoration: underline;
+}
+
+.burger {
+	display: none;
+	flex-direction: column;
+	cursor: pointer;
+	margin-left: auto;
+}
+
+.burgerLine {
+	height: 3px;
+	width: 25px;
+	background-color: white;
+	margin: 3px 0;
+}
+
+
+.navOverlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(72, 66, 131, 0.9);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	transform: translateY(-100%);
+	transition: transform 0.3s ease;
+	z-index: 10;
+	opacity: 0;
+}
+
+.navOverlay.active {
+	transform: translateY(0);
+	opacity: 1;
+}
+
+.closeButton {
+	background: none;
+	border: none;
+	color: white;
+	font-size: 36px;
+	cursor: pointer;
+	position: absolute;
+	top: 20px;
+	right: 20px;
+}
+
+.mobileNavUl {
+	list-style-type: none;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.cartIcon {
+	position: relative;
+	display: inline-block;
+	margin-left: 6px;
+}
+
+.cartBadge {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+
+.navLink:hover {
+	color: #d5d5d5;
+	text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+	.navLink {
+		color: white;
+		font-weight: 600;
+		font-size: 24px;
+		padding: 15px 20px;
+		text-align: center;
+	}
+	.burger {
+		display: flex;
+	}
+
+	.navBlock {
+		justify-content: space-between;
+	}
+
+	.navUl {
+		display: none;
+	}
+
+	.navOverlay {
+		display: flex;
+	}
+}

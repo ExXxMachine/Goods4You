@@ -1,0 +1,77 @@
+.cartContainer {
+	min-height: 100vh;
+	width: 79vw;
+	padding: 50px 0;
+}
+
+.cartHeading {
+	width: 100%;
+	font-weight: 700;
+	font-size: 36px;
+}
+
+.cartContent {
+	display: flex;
+	width: 100%;
+	margin: 50px 0;
+}
+
+.cartPriceBlock {
+	margin-left: 50px;
+	width: 30%;
+	display: flex;
+	flex-direction: column;
+}
+
+.cartPrice1,
+.cartPrice2,
+.cartPrice3 {
+	display: flex;
+	justify-content: space-between;
+	color: #b2b5bb;
+	font-weight: 400;
+	font-size: 18px;
+	margin-bottom: 18px;
+}
+
+.priceMod {
+	color: #444b58;
+}
+
+.cartPrice2 {
+	font-weight: 600;
+	letter-spacing: 0.6px;
+	margin-bottom: 22px;
+}
+
+.cartPrice3 {
+	display: flex;
+	justify-content: space-between;
+	color: #b2b5bb;
+	font-weight: 600;
+	font-size: 24px;
+	border-top: 1px solid #d5d5d5;
+	padding-top: 10px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+	.cartContent {
+		flex-direction: column;
+		align-items: center;
+	}
+	.cartContainer {
+		width: 90%; 
+	}
+
+	.cartHeading {
+		font-size: 28px; 
+	}
+
+	.cartPriceBlock {
+		width: 50vw;
+		padding: 0;
+		margin: 10px 0 0 0;
+	}
+	
+}

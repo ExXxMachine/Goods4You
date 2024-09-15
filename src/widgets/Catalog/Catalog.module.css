@@ -1,0 +1,59 @@
+.catalogContainer {
+    width: 79vw;
+    margin: 48px auto 0;
+}
+
+.catalogTitle {
+    font-family: 'Jost', sans-serif;
+    font-weight: 700;
+    margin: 0;
+    font-size: 36px;
+    color: #444b58;
+}
+
+.catalogAnchor {
+    text-decoration: none;
+    color: inherit;
+}
+
+.catalogSearchInput {
+    font-family: 'Jost', sans-serif;
+    width: 100%;
+    height: 62px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: none;
+    color: #b2b5bb;
+    margin: 48px 0 30px;
+    padding: 20px;
+    background-color: #f6f6f6;
+    font-weight: 400;
+}
+
+.catalogSearchInput:focus {
+    color: #444b58;
+    outline: none;
+}
+
+.catalogBtnBlock {
+    margin: 48px 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+
+@media (max-width: 768px) {
+    .catalogContainer {
+        width: 90vw;
+    }
+
+    .catalogTitle {
+        font-size: 28px; 
+    }
+
+    .catalogSearchInput {
+        height: 50px; 
+        font-size: 14px; 
+    }
+}

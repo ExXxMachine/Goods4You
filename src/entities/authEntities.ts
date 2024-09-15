@@ -1,0 +1,1 @@
+export { description } from '../widgets/ProductList/ProductDescription'

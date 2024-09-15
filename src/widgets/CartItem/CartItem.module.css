@@ -1,0 +1,85 @@
+.cartItemContainer {
+	border: 1px solid #d5d5d5;
+	border-radius: 6px;
+	width: 90%;
+	height: 15.5vh;
+	margin: 5px 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 13px;
+	transition: opacity 0.3s;
+	transition: background-color 0.3s;
+}
+.cartItemContainer:hover {
+	background-color: #f6f6f6;
+}
+.divBlock {
+	display: flex;
+	align-items: center;
+}
+
+.cartItemTitle {
+	margin-left: 12px;
+	font-weight: 600;
+	font-size: 16px;
+	color: #444b58;
+	text-decoration: none;
+}
+
+.cartItemTitle:hover {
+	text-decoration: underline;
+}
+
+.divBlock p {
+	font-weight: 400;
+	font-size: 18px;
+	margin-left: 12px;
+	color: #444b58;
+}
+
+.deleted {
+	opacity: 0.5;
+	pointer-events: none;
+	padding-right: 23px;
+}
+
+.deletedBlock {
+	border: none;
+	padding-right: 25px;
+}
+
+.cardItemDeleteBtn {
+	background: none;
+	border: none;
+	color: #b2b5bb;
+	font: inherit;
+	cursor: pointer;
+	font-weight: 400;
+	font-size: 14px;
+}
+
+.cardItemDeleteBtn:hover {
+	text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+	.cartItemContainer {
+		height: auto;
+		flex-direction: column;
+		padding: 10px;
+	}
+
+	.divBlock {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.cartItemTitle {
+		margin-left: 0;
+	}
+
+	.divBlock p {
+		margin-left: 0;
+	}
+}

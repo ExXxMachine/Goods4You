@@ -1,0 +1,27 @@
+.starRating {
+    display: flex;
+    width: 116px;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.star {
+    font-size: 2rem;
+    color: lightgray;
+    transition: color 0.2s;
+}
+
+.star.filled {
+    filter: invert(78%) sepia(81%) saturate(1568%) hue-rotate(346deg) brightness(101%) contrast(101%);
+}
+
+/* Adabtividad */
+@media (max-width: 768px) {
+    .starRating {
+        width: 90px; /* Reducimos el ancho en dispositivos móviles */
+    }
+
+    .star {
+        font-size: 1.5rem; /* Reducimos el tamaño de las estrellas en dispositivos móviles */
+    }
+}
