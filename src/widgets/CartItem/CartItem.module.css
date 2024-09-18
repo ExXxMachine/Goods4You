@@ -22,9 +22,14 @@
 .cartItemTitle {
 	margin-left: 12px;
 	font-weight: 600;
+	width: 40%;
 	font-size: 16px;
 	color: #444b58;
 	text-decoration: none;
+
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .cartItemTitle:hover {
@@ -49,7 +54,7 @@
 	padding-right: 25px;
 }
 
-.cardItemDeleteBtn {
+.cartItemDeleteBtn {
 	background: none;
 	border: none;
 	color: #b2b5bb;
@@ -59,7 +64,7 @@
 	font-size: 14px;
 }
 
-.cardItemDeleteBtn:hover {
+.cartItemDeleteBtn:hover {
 	text-decoration: underline;
 }
 
@@ -82,4 +87,15 @@
 	.divBlock p {
 		margin-left: 0;
 	}
+}
+
+.cartImg {
+	width: 100px;
+	height: 100px;
+}
+
+.cartControlBlock {
+	display: flex;
+	width: 42.5%;
+	justify-content: space-between;
 }

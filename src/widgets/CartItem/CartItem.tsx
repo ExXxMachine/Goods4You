@@ -4,23 +4,24 @@ import { Link } from 'react-router-dom'
 import { AddBtn, CardBtn } from '../../shared/authShared'
 
 interface CartItemProps {
-	imgFull: string
-	imgSml: string
+	id: number
 	title: string
 	price: number
 	quantity: number
-	sale: number
-	deleted: boolean
-	id: number
+	total: number
+	discountedTotal: number
+	thumbnail: string
+	discountPercentage?: number
+	deleted?: boolean
 }
 
 const CartItem: React.FC<CartItemProps> = ({
 	title,
-	imgSml,
 	price,
 	id,
-	sale,
-	imgFull,
+	discountPercentage,
+	discountedTotal,
+	thumbnail,
 	deleted,
 	quantity,
 }) => {
@@ -32,6 +33,13 @@ const CartItem: React.FC<CartItemProps> = ({
 
 	const isAddBtnVisible = count < 1
 
+	const truncateText = (text: string, length: number) => {
+		if (text.length > length) {
+			return text.substring(0, length) + '...'
+		}
+		return text
+	}
+
 	return (
 		<div
 			className={`${classes.cartItemContainer} ${
@@ -39,14 +47,24 @@ const CartItem: React.FC<CartItemProps> = ({
 			}`}
 		>
 			<div className={`${classes.divBlock} ${deleted ? classes.deleted : ''}`}>
-				<img src={imgSml} alt={`${title} thumbnail`} />
+				<img
+					src={thumbnail}
+					alt={`${title} thumbnail`}
+					className={classes.cartImg}
+				/>
 				<div>
 					<Link
 						className={classes.cartItemTitle}
 						to={`/product/${id}`}
-						state={{ title, price, sale, imgFull }}
+						state={{
+							title,
+							price,
+							discountPercentage,
+							thumbnail,
+							discountedTotal,
+						}}
 					>
-						{title}
+						{truncateText(title, 30)}
 					</Link>
 					<p>${price}</p>
 				</div>
@@ -54,20 +72,20 @@ const CartItem: React.FC<CartItemProps> = ({
 			{deleted ? (
 				<CardBtn />
 			) : (
-				<>
+				<div className={classes.cartControlBlock}>
 					<AddBtn
 						quantity={count}
 						onIncrement={handleIncrement}
 						onDecrement={handleDecrement}
 					/>
 					<button
-						className={classes.cardItemDeleteBtn}
+						className={classes.cartItemDeleteBtn}
 						onClick={handleAddClick}
 						disabled={isAddBtnVisible}
 					>
 						Delete
 					</button>
-				</>
+				</div>
 			)}
 		</div>
 	)
