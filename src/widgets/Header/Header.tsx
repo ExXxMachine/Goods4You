@@ -7,7 +7,6 @@ import cardIco from '../../app/assets/card__ico.svg'
 import { fetchCart } from '../../app/store/slice/cartSlice'
 import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
 
-
 const Header: React.FC<{ userId: number }> = ({ userId }) => {
 	const dispatch = useAppDispatch()
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -15,14 +14,13 @@ const Header: React.FC<{ userId: number }> = ({ userId }) => {
 	const totalProducts = useAppSelector(state => state.cart.totalProducts)
 
 	useEffect(() => {
-		dispatch(fetchCart(userId)) 
+		dispatch(fetchCart(userId))
 	}, [dispatch, userId])
 
 	const toggleMenu = () => {
 		setIsMenuOpen(prevState => !prevState)
 	}
 
-	console.log(totalProducts)
 	return (
 		<>
 			<header className={classesHeader.headerContainer}>
@@ -152,7 +150,7 @@ const Header: React.FC<{ userId: number }> = ({ userId }) => {
 						</a>
 					</li>
 				</ul>
-			</div>	
+			</div>
 			<Outlet />
 		</>
 	)

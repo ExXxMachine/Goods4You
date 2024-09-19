@@ -2,8 +2,12 @@ import React, { useState } from 'react'
 import classes from './StarRating.module.css'
 import StarIcon from '../../app/assets/StarIcon.svg'
 
-const StarRating: React.FC = () => {
-	const [rating, setRating] = useState<number>(0)
+interface StarRatingProps {
+	rating: number 
+}
+
+const StarRating: React.FC<StarRatingProps> = ({ rating: initialRating }) => {
+	const [rating, setRating] = useState<number>(initialRating)
 	const [hoveredRating, setHoveredRating] = useState<number>(0)
 
 	const handleClick = (value: number) => {

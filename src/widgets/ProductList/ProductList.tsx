@@ -1,20 +1,19 @@
-import { description } from './ProductDescription'
 import { ProductCard } from '../authWidgets'
 import classesProductList from './ProductList.module.css'
+import { useAppSelector } from '../../app/store/hooks'
 
 function ProductList() {
+	const products = useAppSelector(state => state.products.products)
+
 	return (
 		<div className={classesProductList.listContainer}>
-			{description.map(card => (
+			{products.map(product => (
 				<ProductCard
-					key={card.id}
-					id={card.id}
-					quantity={card.quantity}
-					imgFull={card.imgFull}
-					img={card.img}
-					title={card.title}
-					price={card.price}
-					sale={card.sale}
+					key={product.id} // Убедитесь, что ключ уникален
+					id={product.id}
+					img={product.thumbnail}
+					title={product.title}
+					price={product.price}
 				/>
 			))}
 		</div>

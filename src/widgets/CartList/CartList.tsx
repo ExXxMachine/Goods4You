@@ -21,7 +21,6 @@ const CartList: React.FC<{ userId: number }> = ({ userId }) => {
 					thumbnail={product.thumbnail}
 					title={product.title}
 					price={product.price}
-					// discountPercentage={product.discountPercentage} 
 					quantity={product.quantity || 1}
 					total={product.total}
 					discountedTotal={product.discountedTotal} 
