@@ -2,58 +2,40 @@ import classes from './Catalog.module.css'
 import { ProductList } from '../authWidgets'
 import { FuncBtn } from '../../shared/authShared'
 import { useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
-import { fetchProducts } from '../../app/store/slice/productsSlice'
+import { useFetchProductsQuery } from '../../app/store/slice/productsApi'
 
 const Catalog: React.FC = () => {
-	const dispatch = useAppDispatch()
-	const products = useAppSelector(state => state.products.products) // Получаем продукты из состояния
 	const [limit] = useState<number>(12) // Количество продуктов за один раз
 	const [skip, setSkip] = useState<number>(0) // Начальное значение для skip
-	const [loading, setLoading] = useState<boolean>(false) // Флаг загрузки
 	const [hasMoreProducts, setHasMoreProducts] = useState<boolean>(true) // Флаг для проверки наличия новых продуктов
+	const [allProducts, setAllProducts] = useState<any[]>([]) // Локальное состояние для хранения всех загруженных продуктов
 
-	// Функция для загрузки начальных продуктов
-	const loadInitialProducts = async () => {
-		if (products.length === 0) {
-			// Проверяем, есть ли уже загруженные продукты
-			setLoading(true)
-			try {
-				const action = await dispatch(fetchProducts({ limit, skip }))
-				if (Array.isArray(action.payload) && action.payload.length < limit) {
-					setHasMoreProducts(false) // Если получено меньше продуктов, чем лимит
-				}
-			} catch (error) {
-				console.error('Ошибка при загрузке продуктов:', error)
-			} finally {
-				setLoading(false) // Сбрасываем флаг после завершения запроса
-			}
-		}
-	}
+	// Используем хук для получения продуктов
+	const {
+		data: fetchedProducts = [],
+		error,
+		isLoading,
+	} = useFetchProductsQuery({ limit, skip })
 
-	// Загружаем продукты только один раз при монтировании компонента
+	// Логируем полученные данные
+	console.log('Fetched Products:', fetchedProducts)
+
+	// Проверка на наличие загруженных данных
 	useEffect(() => {
-		loadInitialProducts() // Вызываем функцию загрузки продуктов
-	}, [dispatch]) // Зависимость только от dispatch
+		if (fetchedProducts.length < limit) {
+			setHasMoreProducts(false) // Если получено меньше продуктов, чем лимит
+		}
+		if (fetchedProducts.length > 0) {
+			setAllProducts(prev => [...prev, ...fetchedProducts]) // Добавляем новые продукты к уже существующим
+		}
+	}, [fetchedProducts])
 
 	// Функция для загрузки дополнительных продуктов
-	const loadMoreProducts = async () => {
-		if (loading || !hasMoreProducts) return // Если уже загружается или нет больше продуктов, не запускаем новый запрос
+	const loadMoreProducts = () => {
+		if (!hasMoreProducts || isLoading) return // Если нет больше продуктов или идет загрузка
 
-		const newSkip = skip + limit // Увеличиваем skip на количество загружаемых продуктов
-		setSkip(newSkip) // Обновляем состояние skip
-		setLoading(true) // Устанавливаем флаг загрузки
-
-		try {
-			const action = await dispatch(fetchProducts({ limit, skip: newSkip }))
-			if (Array.isArray(action.payload) && action.payload.length < limit) {
-				setHasMoreProducts(false) // Если получено меньше продуктов, чем лимит
-			}
-		} catch (error) {
-			console.error('Ошибка при загрузке дополнительных продуктов:', error)
-		} finally {
-			setLoading(false) // Сбрасываем флаг после завершения запроса
-		}
+		setSkip(prevSkip => prevSkip + limit) // Увеличиваем skip на количество загружаемых продуктов
+		console.log(allProducts)
 	}
 
 	return (
@@ -69,15 +51,18 @@ const Catalog: React.FC = () => {
 				className={classes.catalogSearchInput}
 				aria-label='Search products by title'
 			/>
-			{/* Передаем количество видимых продуктов в ProductList */}
-			<ProductList />
+			{/* Передаем все загруженные продукты в ProductList */}
+			<ProductList
+				products={fetchedProducts} // Передаем allProducts вместо fetchedProducts
+				error={error}
+				isLoading={isLoading}
+			/>
 			<div className={classes.catalogBtnBlock}>
 				<FuncBtn
 					title='Show more'
 					onClick={loadMoreProducts}
-					disabled={loading || !hasMoreProducts}
-				/>{' '}
-				{/* Добавляем обработчик клика */}
+					disabled={!hasMoreProducts || isLoading} // Отключаем кнопку при отсутствии товаров или загрузке
+				/>
 			</div>
 		</div>
 	)
