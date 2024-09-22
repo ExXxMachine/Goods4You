@@ -55,7 +55,7 @@ const CartItem: React.FC<CartItemProps> = ({
 				dispatch(updateCartQuantity({ id, quantity: newCount })) 
 				return newCount
 			}
-			return 1
+			return 1 
 		})
 	}
 
