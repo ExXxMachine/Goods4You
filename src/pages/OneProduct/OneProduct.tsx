@@ -1,52 +1,70 @@
-import React, { useEffect } from 'react'
+import { useEffect, useState, FC } from 'react'
 import classes from './OneProduct.module.css'
-import { useParams } from 'react-router-dom'
+import { useParams, Navigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
-import { StarRating, ScrollItem, FuncBtn } from '../../shared/authShared'
+import {
+	StarRating,
+	ScrollItem,
+	FuncBtn,
+	AddBtn,
+} from '../../shared/authShared'
 import { Helmet } from 'react-helmet'
 import { fetchDescriptionById } from '../../app/store/slice/descriptionSlice'
 
-const OneProduct: React.FC = () => {
-	const { id } = useParams<{ id: string }>() 
+const OneProduct: FC = () => {
+	const { id } = useParams<{ id: string }>()
 	const dispatch = useAppDispatch()
 
 	const descriptions = useAppSelector(state => state.descriptions.descriptions)
 	const status = useAppSelector(state => state.descriptions.status)
+	const cartItems = useAppSelector(state => state.cart.products)
+
+	const productInCart = cartItems.find(item => item.id === Number(id))
+	const [count, setCount] = useState(0)
+
+	const isAddBtnVisible = count < 1
+
+	const handleAddClick = () => setCount(1)
+	const handleIncrement = () => setCount(prevCount => prevCount + 1)
+	const handleDecrement = () =>
+		setCount(prevCount => (prevCount > 1 ? prevCount - 1 : 1))
 
 	useEffect(() => {
-		dispatch(fetchDescriptionById(Number(id))) 
-	}, [dispatch, id])
+		if (id) {
+			dispatch(fetchDescriptionById(Number(id)))
+		}
 
+		if (productInCart) {
+			setCount(productInCart.quantity)
+		}
+	}, [dispatch, id, productInCart])
+
+	// Check for loading status
 	if (status === 'loading') {
-		return <p>Загрузка...</p>
+		return <p>Loading...</p>
 	}
 
-	if (status === 'failed') {
-		return <p>Ошибка при загрузке товара.</p>
-	}
-
-	if (!descriptions) {
-		return <p>Нет данных о товаре.</p>
+	// Check for failed status and redirect only if descriptions are not available
+	if (status === 'failed' || !descriptions) {
+		return <Navigate to='/404' />
 	}
 
 	const discountPercentage =
 		descriptions.price && descriptions.discountPercentage
 			? (descriptions.price * (100 - descriptions.discountPercentage)) / 100
-			: 0 
+			: 0
 
 	return (
 		<div className={classes.productContainer}>
 			<Helmet>
 				<title>{descriptions.title} | Goods4you</title>
 			</Helmet>
-			<div className={classes.productImageContainer}>
-				<img
-					src={descriptions.thumbnail}
-					alt={descriptions.title}
-					className={classes.productImage}
-				/>
-				<ScrollItem img={descriptions.thumbnail} />
-			</div>
+
+			<ScrollItem
+				thumbnail={descriptions.thumbnail}
+				img={descriptions.images}
+			/>
+
 			<div className={classes.productDescription}>
 				<h2 className={classes.productTitle}>{descriptions.title}</h2>
 				<div className={classes.productRating}>
@@ -58,12 +76,6 @@ const OneProduct: React.FC = () => {
 				</p>
 				<p className={classes.productDescriptionText}>
 					{descriptions.description}
-				</p>
-				<p className={classes.productDelivery}>
-					{descriptions.warrantyInformation}
-				</p>
-				<p className={classes.productDelivery}>
-					{descriptions.shippingInformation}
 				</p>
 				<div className={classes.productPriceBlock}>
 					<div className={classes.devBlock}>
@@ -77,7 +89,15 @@ const OneProduct: React.FC = () => {
 							Your discount: <span>{descriptions.discountPercentage}%</span>
 						</p>
 					</div>
-					<FuncBtn title='Add to cart' />
+					{isAddBtnVisible ? (
+						<FuncBtn onClick={handleAddClick} title='Add to cart' />
+					) : (
+						<AddBtn
+							quantity={count}
+							onIncrement={handleIncrement}
+							onDecrement={handleDecrement}
+						/>
+					)}
 				</div>
 			</div>
 		</div>

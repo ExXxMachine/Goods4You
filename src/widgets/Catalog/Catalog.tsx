@@ -1,42 +1,45 @@
 import classes from './Catalog.module.css'
 import { ProductList } from '../authWidgets'
 import { FuncBtn } from '../../shared/authShared'
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useFetchProductsQuery } from '../../app/store/slice/productsApi'
+import { useDispatch } from 'react-redux'
+import { addProducts, clearProducts } from '../../app/store/slice/productsSlice'
 
-const Catalog: React.FC = () => {
-	const [limit] = useState<number>(12) // Количество продуктов за один раз
-	const [skip, setSkip] = useState<number>(0) // Начальное значение для skip
-	const [hasMoreProducts, setHasMoreProducts] = useState<boolean>(true) // Флаг для проверки наличия новых продуктов
-	const [allProducts, setAllProducts] = useState<any[]>([]) // Локальное состояние для хранения всех загруженных продуктов
+const Catalog: FC = () => {
+	const dispatch = useDispatch()
+	const [limit] = useState<number>(12)
+	const [skip, setSkip] = useState<number>(0)
+	const [searchQuery, setSearchQuery] = useState<string>('')
+	const [debouncedQuery, setDebouncedQuery] = useState<string>('')
 
-	// Используем хук для получения продуктов
 	const {
-		data: fetchedProducts = [],
+		data: fetchedProducts,
 		error,
 		isLoading,
-	} = useFetchProductsQuery({ limit, skip })
+	} = useFetchProductsQuery({ limit, skip, q: debouncedQuery })
 
-	// Логируем полученные данные
-	console.log('Fetched Products:', fetchedProducts)
-
-	// Проверка на наличие загруженных данных
 	useEffect(() => {
-		if (fetchedProducts.length < limit) {
-			setHasMoreProducts(false) // Если получено меньше продуктов, чем лимит
+		if (fetchedProducts && Array.isArray(fetchedProducts.products)) {
+			dispatch(addProducts(fetchedProducts.products))
 		}
-		if (fetchedProducts.length > 0) {
-			setAllProducts(prev => [...prev, ...fetchedProducts]) // Добавляем новые продукты к уже существующим
+	}, [fetchedProducts, dispatch])
+
+	useEffect(() => {
+		const handler = setTimeout(() => {
+			setDebouncedQuery(searchQuery === '' ? ' ' : searchQuery)
+			if (searchQuery) {
+				setSkip(0)
+				dispatch(clearProducts())
+			} else {
+				dispatch(clearProducts())
+			}
+		}, 1000)
+
+		return () => {
+			clearTimeout(handler)
 		}
-	}, [fetchedProducts])
-
-	// Функция для загрузки дополнительных продуктов
-	const loadMoreProducts = () => {
-		if (!hasMoreProducts || isLoading) return // Если нет больше продуктов или идет загрузка
-
-		setSkip(prevSkip => prevSkip + limit) // Увеличиваем skip на количество загружаемых продуктов
-		console.log(allProducts)
-	}
+	}, [searchQuery, dispatch])
 
 	return (
 		<div className={classes.catalogContainer}>
@@ -50,19 +53,22 @@ const Catalog: React.FC = () => {
 				placeholder='Search by title'
 				className={classes.catalogSearchInput}
 				aria-label='Search products by title'
+				value={searchQuery}
+				onChange={e => setSearchQuery(e.target.value)}
 			/>
-			{/* Передаем все загруженные продукты в ProductList */}
-			<ProductList
-				products={fetchedProducts} // Передаем allProducts вместо fetchedProducts
-				error={error}
-				isLoading={isLoading}
-			/>
+			<ProductList error={error} isLoading={isLoading} />
 			<div className={classes.catalogBtnBlock}>
-				<FuncBtn
-					title='Show more'
-					onClick={loadMoreProducts}
-					disabled={!hasMoreProducts || isLoading} // Отключаем кнопку при отсутствии товаров или загрузке
-				/>
+				{fetchedProducts && fetchedProducts.products.length >= limit && (
+					<FuncBtn
+						title='Show more'
+						onClick={() => {
+							setSkip(prevSkip => prevSkip + limit)
+						}}
+						disabled={
+							!fetchedProducts || fetchedProducts.products.length < limit
+						}
+					/>
+				)}
 			</div>
 		</div>
 	)

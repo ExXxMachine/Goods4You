@@ -1,20 +1,23 @@
 import { ProductCard } from '../authWidgets'
 import classesProductList from './ProductList.module.css'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../app/store/store'
 
 interface ProductListProps {
-	products: any[] // Массив продуктов
-	error: any // Ошибка, если есть
-	isLoading: boolean // Статус загрузки
+	error: any
+	isLoading: boolean
 }
 
-function ProductList({ products, error, isLoading }: ProductListProps) {
-	console.log(products)
+function ProductList({ error, isLoading }: ProductListProps) {
+	const products = useSelector((state: RootState) => state.products.products)
+
 	return (
 		<div className={classesProductList.listContainer}>
 			{isLoading && <div>Loading...</div>}
 			{error && <div>Error loading products</div>}
+			{!isLoading && products.length === 0 && <div>No products available.</div>}
 			{!isLoading &&
-				products?.products.map((product: any) => (
+				products.map((product: any) => (
 					<ProductCard
 						key={product.id}
 						id={product.id}

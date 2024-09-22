@@ -2,9 +2,9 @@ import React from 'react'
 import classesFuncBtn from './FuncBtn.module.css'
 
 interface FuncBtnProps {
-	title: string // Заголовок кнопки
-	onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void // Обработчик клика
-	disabled?: boolean // Свойство для отключения кнопки
+	title: string 
+	onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void 
+	disabled?: boolean 
 }
 
 const FuncBtn: React.FC<FuncBtnProps> = ({
@@ -16,7 +16,7 @@ const FuncBtn: React.FC<FuncBtnProps> = ({
 		<button
 			className={classesFuncBtn.FuncBtn}
 			onClick={onClick}
-			disabled={disabled} // Устанавливаем свойство disabled
+			disabled={disabled} 
 		>
 			{title}
 		</button>

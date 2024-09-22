@@ -11,23 +11,22 @@ const Cart = () => {
 
 	const products = useAppSelector(state => state.cart.products)
 
-	
 	useEffect(() => {
 		dispatch(fetchCart(userId))
 	}, [dispatch, userId])
 
-
 	const totalSum = products.reduce((accumulator, product) => {
 		return accumulator + product.total
-	}, 0) 
+	}, 0)
 
 	const discountedTotal = products.reduce((accumulator, product) => {
-		return accumulator + product.discountedTotal 
+		return accumulator + product.discountedTotal
 	}, 0)
 
 	const quantity = products.reduce((accumulator, product) => {
-		return accumulator + product.quantity 
+		return accumulator + product.quantity
 	}, 0)
+
 	return (
 		<div className={classes.cartContainer}>
 			<Helmet>
@@ -43,11 +42,13 @@ const Cart = () => {
 					</p>
 					<p className={classes.cartPrice2}>
 						Price without discount
-						<span className={classes.priceMod}>${totalSum}</span>
+						<span className={classes.priceMod}>${totalSum.toFixed(2)}</span>
 					</p>
 					<p className={classes.cartPrice3}>
 						Total price{' '}
-						<span className={classes.priceMod}>${discountedTotal}</span>
+						<span className={classes.priceMod}>
+							${discountedTotal.toFixed(2)}
+						</span>
 					</p>
 				</div>
 			</div>

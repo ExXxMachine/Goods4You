@@ -1,8 +1,5 @@
-// src/app/store/slice/descriptionSlice.ts
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
-// Определяем интерфейс для описания товара
 export interface ProductDescription {
 	id: number
 	title: string
@@ -13,37 +10,35 @@ export interface ProductDescription {
 	description: string
 	warrantyInformation: string
 	shippingInformation: string
-  tags:string[]
-  rating: number
+	tags: string[]
+	rating: number
+	images: string[]
 }
-	
+
 interface DescriptionState {
-	descriptions: ProductDescription | null // Описание товара
+	descriptions: ProductDescription | null
 	status: 'idle' | 'loading' | 'succeeded' | 'failed'
 }
 
-// Начальное состояние
 const initialState: DescriptionState = {
 	descriptions: null,
 	status: 'idle',
 }
 
-// Асинхронное действие для получения описания товара по ID
 export const fetchDescriptionById = createAsyncThunk<
 	ProductDescription,
 	number
 >('descriptions/fetchDescriptionById', async id => {
 	const response = await fetch(
-		`https://dummyjson.com/products/${id}?select=title,price,id,warrantyInformation,shippingInformation,stock,description,tags,rating,thumbnail,discountPercentage`
+		`https://dummyjson.com/products/${id}?select=title,price,id,warrantyInformation,shippingInformation,stock,description,tags,rating,thumbnail,discountPercentage,images`
 	)
 	if (!response.ok) {
 		throw new Error('Ошибка при получении данных')
 	}
 	const data = await response.json()
-	return data // Возвращаем данные о товаре
+	return data
 })
 
-// Создаем slice
 const descriptionSlice = createSlice({
 	name: 'descriptions',
 	initialState,
@@ -55,7 +50,7 @@ const descriptionSlice = createSlice({
 			})
 			.addCase(fetchDescriptionById.fulfilled, (state, action) => {
 				state.status = 'succeeded'
-				state.descriptions = action.payload // Сохраняем информацию о товаре
+				state.descriptions = action.payload
 			})
 			.addCase(fetchDescriptionById.rejected, state => {
 				state.status = 'failed'
@@ -63,5 +58,4 @@ const descriptionSlice = createSlice({
 	},
 })
 
-// Экспортируем редьюсер и асинхронные действия
 export default descriptionSlice.reducer
