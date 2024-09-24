@@ -28,9 +28,13 @@ const Cart = () => {
 	}, 0)
 
 	return (
-		<div className={classes.cartContainer}>
+		<main className={classes.cartContainer}>
 			<Helmet>
 				<title>My cart | Goods4you</title>
+				<meta
+					name='description'
+					content='Browse and manage the items in your shopping cart. User-friendly interface for changing the quantity and deleting items.'
+				/>
 			</Helmet>
 			<h1 className={classes.cartHeading}>My cart</h1>
 			<div className={classes.cartContent}>
@@ -52,7 +56,7 @@ const Cart = () => {
 					</p>
 				</div>
 			</div>
-		</div>
+		</main>
 	)
 }
 

@@ -7,7 +7,7 @@ interface CardBtnProps {
 
 const CardBtn: React.FC<CardBtnProps> = ({ onClick }) => {
 	return (
-		<button className={classesBtn.CardBtn} onClick={onClick}>
+		<button className={classesBtn.CardBtn} onClick={onClick} aria-label='Add to cart'>
 			<img src={CardImg} alt='cardimg' />
 		</button>
 	)

@@ -42,7 +42,7 @@ const Catalog: FC = () => {
 	}, [searchQuery, dispatch])
 
 	return (
-		<div className={classes.catalogContainer}>
+		<section className={classes.catalogContainer}>
 			<h2 className={classes.catalogTitle}>
 				<a id='catalog' className={classes.catalogAnchor}>
 					Catalog
@@ -70,7 +70,7 @@ const Catalog: FC = () => {
 					/>
 				)}
 			</div>
-		</div>
+		</section>
 	)
 }
 

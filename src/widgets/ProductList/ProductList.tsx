@@ -12,7 +12,7 @@ function ProductList({ error, isLoading }: ProductListProps) {
 	const products = useSelector((state: RootState) => state.products.products)
 
 	return (
-		<div className={classesProductList.listContainer}>
+		<section className={classesProductList.listContainer}>
 			{isLoading && <div>Loading...</div>}
 			{error && <div>Error loading products</div>}
 			{!isLoading && products.length === 0 && <div>No products available.</div>}
@@ -26,7 +26,7 @@ function ProductList({ error, isLoading }: ProductListProps) {
 						price={product.price}
 					/>
 				))}
-		</div>
+		</section>
 	)
 }
 

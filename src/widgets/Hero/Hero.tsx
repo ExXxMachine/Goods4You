@@ -2,7 +2,7 @@ import classesHero from './Hero.module.css'
 
 function Hero() {
 	return (
-		<div className={classesHero.heroContainer}>
+		<section className={classesHero.heroContainer}>
 			<div className={classesHero.heroBackText}>Goods4you</div>
 			<div className={classesHero.heroContent}>
 				<h1 className={classesHero.heroHeading}>
@@ -20,7 +20,7 @@ function Hero() {
 					Go to shopping
 				</a>
 			</div>
-		</div>
+		</section>
 	)
 }
 

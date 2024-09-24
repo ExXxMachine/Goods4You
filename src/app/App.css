@@ -7,3 +7,7 @@
 	min-height: 100vh;
 	font-family: 'Jost', sans-serif;
 }
+body,
+html {
+	font-family: 'Jost', sans-serif;
+}

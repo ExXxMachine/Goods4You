@@ -42,7 +42,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ img, title, price, id }) => {
 			<div className={classesProductCard.cardDescriptionBlock}>
 				<div className={classesProductCard.cardTextBlock}>
 					<Link to={`/product/${id}`} className={classesProductCard.cardTitle}>
-						<span>{title}</span>
+						<label>{title}</label>
 					</Link>
 					<p className={classesProductCard.cardPrice}>${price.toFixed(2)}</p>
 				</div>

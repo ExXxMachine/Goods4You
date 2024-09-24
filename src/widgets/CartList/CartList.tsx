@@ -13,7 +13,7 @@ const CartList: React.FC<{ userId: number }> = ({ userId }) => {
 	}, [dispatch, userId])
 
 	return (
-		<div className={classes.cartListContainer}>
+		<section className={classes.cartListContainer}>
 			{products.slice(0, 4).map(product => (
 				<CartItem
 					key={product.id}
@@ -26,7 +26,7 @@ const CartList: React.FC<{ userId: number }> = ({ userId }) => {
 					discountedTotal={product.discountedTotal} 
 				/>
 			))}
-		</div>
+		</section>
 	)
 }
 

@@ -55,9 +55,17 @@ const OneProduct: FC = () => {
 			: 0
 
 	return (
-		<div className={classes.productContainer}>
+		<main className={classes.productContainer}>
 			<Helmet>
 				<title>{descriptions.title} | Goods4you</title>
+				<meta
+					name='description'
+					content={`Buy ${
+						descriptions.title
+					} for just $${discountPercentage.toFixed(2)}. Only ${
+						descriptions.stock
+					} items left in stock!`}
+				/>
 			</Helmet>
 
 			<ScrollItem
@@ -100,7 +108,7 @@ const OneProduct: FC = () => {
 					)}
 				</div>
 			</div>
-		</div>
+		</main>
 	)
 }
 
