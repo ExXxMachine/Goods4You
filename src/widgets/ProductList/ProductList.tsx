@@ -1,23 +1,32 @@
-import { description } from './ProductDescription'
 import { ProductCard } from '../authWidgets'
 import classesProductList from './ProductList.module.css'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../app/store/store'
 
-function ProductList() {
+interface ProductListProps {
+	error: any
+	isLoading: boolean
+}
+
+function ProductList({ error, isLoading }: ProductListProps) {
+	const products = useSelector((state: RootState) => state.products.products)
+
 	return (
-		<div className={classesProductList.listContainer}>
-			{description.map(card => (
-				<ProductCard
-					key={card.id}
-					id={card.id}
-					quantity={card.quantity}
-					imgFull={card.imgFull}
-					img={card.img}
-					title={card.title}
-					price={card.price}
-					sale={card.sale}
-				/>
-			))}
-		</div>
+		<section className={classesProductList.listContainer}>
+			{isLoading && <div>Loading...</div>}
+			{error && <div>Error loading products</div>}
+			{!isLoading && products.length === 0 && <div>No products available.</div>}
+			{!isLoading &&
+				products.map((product: any) => (
+					<ProductCard
+						key={product.id}
+						id={product.id}
+						img={product.thumbnail}
+						title={product.title}
+						price={product.price}
+					/>
+				))}
+		</section>
 	)
 }
 

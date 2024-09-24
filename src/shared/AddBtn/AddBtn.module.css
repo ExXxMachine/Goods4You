@@ -16,6 +16,8 @@
 .AddBtn__container {
 	display: flex;
 	align-items: center;
+	min-width: 188px;
+	white-space: nowrap;
 }
 
 .AddBtn__counter {

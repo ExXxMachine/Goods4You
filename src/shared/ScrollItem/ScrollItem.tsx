@@ -1,33 +1,54 @@
 import React, { useState } from 'react'
 import classesScroll from './ScrollItem.module.css'
+
 interface ScrollItemProps {
-	img: string
+	img: string[]
+	thumbnail: string
 }
 
-const ScrollItem: React.FC<ScrollItemProps> = ({ img }) => {
-	const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
+const ScrollItem: React.FC<ScrollItemProps> = ({ img, thumbnail }) => {
+	const [selectedIndex, setSelectedIndex] = useState<number>(0)
+	const [fadeOut, setFadeOut] = useState<boolean>(false)
 
 	const handleItemClick = (index: number) => {
-		setSelectedIndex(index)
+		if (selectedIndex !== index) {
+			setFadeOut(true)
+			setTimeout(() => {
+				setSelectedIndex(index)
+				setFadeOut(false)
+			}, 300)
+		}
+	}
+
+	if (img.length === 0) {
+		return null
 	}
 
 	return (
 		<div className={classesScroll.Scroll__container}>
-			{[1, 2, 3, 4, 5, 6].map((_, index) => (
-				<img
-					key={index}
-					src={img}
-					alt={`Scroll item ${index + 1}`}
-					className={`${classesScroll.scroll__item} ${
-						selectedIndex === index
-							? classesScroll.selected
-							: selectedIndex === null && index === 0
-							? classesScroll.selected
-							: ''
-					}`}
-					onClick={() => handleItemClick(index)}
-				/>
-			))}
+			<img
+				src={img.length > 1 ? img[selectedIndex] : thumbnail}
+				alt='Selected'
+				className={`${classesScroll.mainImage} ${
+					fadeOut ? classesScroll.fade_out : classesScroll.fade_in
+				}`}
+			/>
+
+			{img.length > 1 && (
+				<div className={classesScroll.previewContainer}>
+					{img.map((image, index) => (
+						<img
+							key={index}
+							src={image}
+							alt={`Scroll item ${index + 1}`}
+							className={`${classesScroll.scroll__item} ${
+								selectedIndex === index ? classesScroll.selected : ''
+							}`}
+							onClick={() => handleItemClick(index)}
+						/>
+					))}
+				</div>
+			)}
 		</div>
 	)
 }

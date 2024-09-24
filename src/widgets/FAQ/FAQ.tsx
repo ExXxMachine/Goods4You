@@ -14,7 +14,7 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer }) => {
 	}
 
 	return (
-		<div className={classes.faqItem}>
+		<section className={classes.faqItem}>
 			<div
 				className={classes.faqQuestion}
 				onClick={toggleOpen}
@@ -30,7 +30,7 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer }) => {
 			<div className={`${classes.faqAnswer} ${isOpen ? classes.open : ''}`}>
 				<p>{answer}</p>
 			</div>
-		</div>
+		</section>
 	)
 }
 

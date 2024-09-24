@@ -1,11 +1,21 @@
-import { useState } from 'react'
+// src/widgets/Header/Header.tsx
+import React, { useEffect, useState } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import { HashLink } from 'react-router-hash-link'
 import classesHeader from './Header.module.css'
 import cardIco from '../../app/assets/card__ico.svg'
+import { fetchCart } from '../../app/store/slice/cartSlice'
+import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
 
-function Header() {
+const Header: React.FC<{ userId: number }> = ({ userId }) => {
+	const dispatch = useAppDispatch()
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+	const totalProducts = useAppSelector(state => state.cart.totalProducts)
+
+	useEffect(() => {
+		dispatch(fetchCart(userId))
+	}, [dispatch, userId])
 
 	const toggleMenu = () => {
 		setIsMenuOpen(prevState => !prevState)
@@ -34,30 +44,32 @@ function Header() {
 								Cart
 								<div className={classesHeader.cartIcon}>
 									<img src={cardIco} alt='Cart Icon' />
-									<svg
-										width='14'
-										height='18'
-										className={classesHeader.cartBadge}
-									>
-										<circle
-											cx='7'
-											cy='9'
-											r='7'
-											strokeWidth='1'
-											fill='#F14F4F'
-										/>
-										<text
-											x='50%'
-											y='50%'
-											dominantBaseline='middle'
-											textAnchor='middle'
-											fill='white'
-											fontSize='6'
-											fontFamily="'Jost', sans-serif"
+									{totalProducts > 0 && (
+										<svg
+											width='14'
+											height='18'
+											className={classesHeader.cartBadge}
 										>
-											99+
-										</text>
-									</svg>
+											<circle
+												cx='7'
+												cy='9'
+												r='7'
+												strokeWidth='1'
+												fill='#F14F4F'
+											/>
+											<text
+												x='50%'
+												y='50%'
+												dominantBaseline='middle'
+												textAnchor='middle'
+												fill='white'
+												fontSize='6'
+												fontFamily="'Jost', sans-serif"
+											>
+												{totalProducts}
+											</text>
+										</svg>
+									)}
 								</div>
 							</Link>
 						</li>
@@ -74,6 +86,7 @@ function Header() {
 					</div>
 				</nav>
 			</header>
+
 			<div
 				className={`${classesHeader.navOverlay} ${
 					isMenuOpen ? classesHeader.active : ''
@@ -98,26 +111,38 @@ function Header() {
 						</HashLink>
 					</li>
 					<li>
-						<Link to='/cart' className={classesHeader.navLink}>
-							Cart
-							<div className={classesHeader.cartIcon}>
-								<img src={cardIco} alt='Cart Icon' />
-								<svg width='14' height='18' className={classesHeader.cartBadge}>
-									<circle cx='7' cy='9' r='7' strokeWidth='1' fill='#F14F4F' />
-									<text
-										x='50%'
-										y='50%'
-										dominantBaseline='middle'
-										textAnchor='middle'
-										fill='white'
-										fontSize='6'
-										fontFamily="'Jost', sans-serif"
+						{totalProducts > 0 && (
+							<Link to='/cart' className={classesHeader.navLink}>
+								Cart
+								<div className={classesHeader.cartIcon}>
+									<img src={cardIco} alt='Cart Icon' />
+									<svg
+										width='14'
+										height='18'
+										className={classesHeader.cartBadge}
 									>
-										99+
-									</text>
-								</svg>
-							</div>
-						</Link>
+										<circle
+											cx='7'
+											cy='9'
+											r='7'
+											strokeWidth='1'
+											fill='#F14F4F'
+										/>
+										<text
+											x='50%'
+											y='50%'
+											dominantBaseline='middle'
+											textAnchor='middle'
+											fill='white'
+											fontSize='6'
+											fontFamily="'Jost', sans-serif"
+										>
+											{totalProducts}
+										</text>
+									</svg>
+								</div>
+							</Link>
+						)}
 					</li>
 					<li>
 						<a href='#' className={classesHeader.navLink}>

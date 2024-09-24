@@ -1,28 +1,28 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import classesProductCard from './ProductCard.module.css'
 import { CardBtn, AddBtn } from '../../shared/authShared'
 import { Link } from 'react-router-dom'
+import { useAppSelector } from '../../app/store/hooks'	
 
 interface ProductCardProps {
 	img: string
-	imgFull: string
 	title: string
 	price: number
-	quantity: number
-	sale: number
 	id: number
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({
-	img,
-	title,
-	price,
-	sale,
-	imgFull,
-	id,
-}) => {
+const ProductCard: React.FC<ProductCardProps> = ({ img, title, price, id }) => {
 	const [count, setCount] = useState(0)
 	const isAddBtnVisible = count < 1
+
+	const cartItems = useAppSelector(state => state.cart.products) 
+	const productInCart = cartItems.find(item => item.id === id) 
+
+	useEffect(() => {
+		if (productInCart) {
+			setCount(productInCart.quantity)
+		}
+	}, [productInCart])
 
 	const handleAddClick = () => setCount(1)
 	const handleIncrement = () => setCount(prevCount => prevCount + 1)
@@ -31,7 +31,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
 	return (
 		<div className={classesProductCard.cardContainer}>
-			<Link to={`/product/${id}`} state={{ title, price, sale, imgFull }}>
+			<Link to={`/product/${id}`}>
 				<div className={classesProductCard.cardImgBlock}>
 					<img src={img} alt={title} />
 					<div className={classesProductCard.overlay}>
@@ -42,7 +42,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 			<div className={classesProductCard.cardDescriptionBlock}>
 				<div className={classesProductCard.cardTextBlock}>
 					<Link to={`/product/${id}`} className={classesProductCard.cardTitle}>
-						<h3>{title}</h3>
+						<label>{title}</label>
 					</Link>
 					<p className={classesProductCard.cardPrice}>${price.toFixed(2)}</p>
 				</div>
