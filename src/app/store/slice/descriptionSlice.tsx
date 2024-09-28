@@ -1,24 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-
-export interface ProductDescription {
-	id: number
-	title: string
-	price: number
-	discountPercentage: number
-	stock: number
-	thumbnail: string
-	description: string
-	warrantyInformation: string
-	shippingInformation: string
-	tags: string[]
-	rating: number
-	images: string[]
-}
-
-interface DescriptionState {
-	descriptions: ProductDescription | null
-	status: 'idle' | 'loading' | 'succeeded' | 'failed'
-}
+import { ProductDescription, DescriptionState} from '../../../entities/authEntities'
 
 const initialState: DescriptionState = {
 	descriptions: null,
@@ -35,8 +16,7 @@ export const fetchDescriptionById = createAsyncThunk<
 	if (!response.ok) {
 		throw new Error('Ошибка при получении данных')
 	}
-	const data = await response.json()
-	return data
+	return await response.json()
 })
 
 const descriptionSlice = createSlice({

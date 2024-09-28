@@ -11,3 +11,12 @@ body,
 html {
 	font-family: 'Jost', sans-serif;
 }
+
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+		color: #484283;
+    height: 100vh; 
+}

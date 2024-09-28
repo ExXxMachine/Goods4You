@@ -20,14 +20,14 @@ const Catalog: FC = () => {
 	} = useFetchProductsQuery({ limit, skip, q: debouncedQuery })
 
 	useEffect(() => {
-		if (fetchedProducts && Array.isArray(fetchedProducts.products)) {
+		if (fetchedProducts?.products) {
 			dispatch(addProducts(fetchedProducts.products))
 		}
 	}, [fetchedProducts, dispatch])
 
 	useEffect(() => {
 		const handler = setTimeout(() => {
-			setDebouncedQuery(searchQuery === '' ? ' ' : searchQuery)
+			setDebouncedQuery(searchQuery || ' ')
 			if (searchQuery) {
 				setSkip(0)
 				dispatch(clearProducts())
@@ -36,9 +36,7 @@ const Catalog: FC = () => {
 			}
 		}, 1000)
 
-		return () => {
-			clearTimeout(handler)
-		}
+		return () => clearTimeout(handler)
 	}, [searchQuery, dispatch])
 
 	return (
@@ -58,17 +56,16 @@ const Catalog: FC = () => {
 			/>
 			<ProductList error={error} isLoading={isLoading} />
 			<div className={classes.catalogBtnBlock}>
-				{fetchedProducts && fetchedProducts.products.length >= limit && (
-					<FuncBtn
-						title='Show more'
-						onClick={() => {
-							setSkip(prevSkip => prevSkip + limit)
-						}}
-						disabled={
-							!fetchedProducts || fetchedProducts.products.length < limit
-						}
-					/>
-				)}
+				{fetchedProducts?.products &&
+					fetchedProducts.products.length >= limit && (
+						<FuncBtn
+							title='Show more'
+							onClick={() => setSkip(prevSkip => prevSkip + limit)}
+							disabled={
+								!fetchedProducts || fetchedProducts.products.length < limit
+							}
+						/>
+					)}
 			</div>
 		</section>
 	)

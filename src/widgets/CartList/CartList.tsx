@@ -14,7 +14,8 @@ const CartList: React.FC<{ userId: number }> = ({ userId }) => {
 
 	return (
 		<section className={classes.cartListContainer}>
-			{products.slice(0, 4).map(product => (
+			
+			{products.map(product => (
 				<CartItem
 					key={product.id}
 					id={product.id}

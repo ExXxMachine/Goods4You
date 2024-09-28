@@ -21,7 +21,6 @@ const OneProduct: FC = () => {
 
 	const productInCart = cartItems.find(item => item.id === Number(id))
 	const [count, setCount] = useState(0)
-
 	const isAddBtnVisible = count < 1
 
 	const handleAddClick = () => setCount(1)
@@ -39,12 +38,10 @@ const OneProduct: FC = () => {
 		}
 	}, [dispatch, id, productInCart])
 
-	// Check for loading status
 	if (status === 'loading') {
 		return <p>Loading...</p>
 	}
 
-	// Check for failed status and redirect only if descriptions are not available
 	if (status === 'failed' || !descriptions) {
 		return <Navigate to='/404' />
 	}
@@ -76,7 +73,7 @@ const OneProduct: FC = () => {
 			<div className={classes.productDescription}>
 				<h2 className={classes.productTitle}>{descriptions.title}</h2>
 				<div className={classes.productRating}>
-					<StarRating rating={Math.round(descriptions.rating)} />{' '}
+					<StarRating rating={Math.round(descriptions.rating)} />
 					<p>{descriptions.tags.join(', ')}</p>
 				</div>
 				<p className={classes.productAlert}>
