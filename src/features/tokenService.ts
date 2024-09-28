@@ -12,9 +12,12 @@ export const removeToken = () => {
 	localStorage.removeItem(TOKEN_KEY)
 }
 
-export const isTokenExpired = () => {
-	const token = getToken()
-	if (!token) return true
+// src/features/tokenService.ts
 
-	return false
-}
+export const isTokenExpired = (token: string | null): boolean => {
+    if (!token) return true; // Если токен отсутствует, считается истекшим
+
+    const payload = JSON.parse(atob(token.split('.')[1])); // Декодируем JWT
+    const expirationTime = payload.exp * 1000; // Время истечения в миллисекундах
+    return Date.now() >= expirationTime; // Проверяем, истек ли токен
+};

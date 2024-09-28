@@ -1,3 +1,5 @@
+// src/App.tsx
+
 import './App.css'
 import './rest.css'
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
@@ -18,14 +20,20 @@ function App() {
 	const dispatch = useAppDispatch()
 
 	const checkAndRefreshToken = async () => {
-		const token = getToken()
-
-		if (token && !isTokenExpired()) {
+		const token = localStorage.getItem('auth_token')
+		console.log(token)
+		if (token && !isTokenExpired(token)) {
 			await dispatch(fetchUser())
 			setIsAuthenticated(true)
 		} else {
-			await refreshAccessToken()
-			setIsAuthenticated(false)
+			await refreshAccessToken() // Обновляем токен
+			const newToken = localStorage.getItem('accessToken') // Получаем новый токен
+			if (newToken && !isTokenExpired(newToken)) {
+				await dispatch(fetchUser()) // Если новый токен действителен
+				setIsAuthenticated(true)
+			} else {
+				setIsAuthenticated(false)
+			}
 		}
 
 		setLoading(false)

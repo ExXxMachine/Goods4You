@@ -60,3 +60,5 @@ export const fetchUserData = async () => {
 
 	return await response.json()
 }
+
+
