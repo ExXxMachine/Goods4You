@@ -30,19 +30,13 @@ export const fetchCart = createAsyncThunk<CartState, number>(
 				Authorization: `Bearer ${token}`,
 			},
 		})
+
 		if (!response.ok) {
-			throw new Error('Error fetching cart')
+			throw new Error('Error fetching cart') // Выбрасываем ошибку
 		}
+
 		const data = await response.json()
-		const cart = data.carts[0]
-		return {
-			products: cart.products || [],
-			totalQuantity: cart.totalQuantity || 0,
-			totalProducts: cart.totalProducts || 0,
-			total: cart.total || 0,
-			discountedTotal: cart.discountedTotal || 0,
-			status: 'succeeded',
-		}
+		return data.carts[0] // Возвращаем данные корзины
 	}
 )
 

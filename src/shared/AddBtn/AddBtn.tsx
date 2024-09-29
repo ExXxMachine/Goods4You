@@ -17,7 +17,7 @@ const AddBtn: React.FC<AddBtnProps> = ({
 			<button
 				className={classesAddBtn.AddBtn}
 				onClick={onDecrement}
-				aria-label='Reduce the quantity of goods'
+				aria-label={`Reduce the quantity of goods for item ${quantity}`} // Уникальный aria-label
 			>
 				<svg width='18' height='3' viewBox='0 0 18 3' fill='none'>
 					<rect width='18' height='3' fill='white' />
@@ -27,7 +27,7 @@ const AddBtn: React.FC<AddBtnProps> = ({
 			<button
 				className={classesAddBtn.AddBtn}
 				onClick={onIncrement}
-				aria-label='Increase the quantity of goods'
+				aria-label={`Increase the quantity of goods for item ${quantity}`} 
 			>
 				<svg width='19' height='19' viewBox='0 0 19 19' fill='none'>
 					<rect x='8' y='0' width='3' height='19' fill='white' />

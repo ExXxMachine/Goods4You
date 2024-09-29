@@ -1,3 +1,5 @@
+// src/pages/authPage/CartItem.tsx
+
 import React, { useEffect, useState } from 'react'
 import classes from './CartItem.module.css'
 import { Link } from 'react-router-dom'
@@ -9,12 +11,11 @@ interface CartItemProps {
 	id: number
 	title: string
 	price: number
-	quantity: number 
+	quantity: number
 	total: number
 	discountedTotal: number
 	thumbnail: string
 	discountPercentage?: number
-	deleted?: boolean
 }
 
 const CartItem: React.FC<CartItemProps> = ({
@@ -24,26 +25,30 @@ const CartItem: React.FC<CartItemProps> = ({
 	discountPercentage,
 	discountedTotal,
 	thumbnail,
-	deleted,
 	quantity,
 }) => {
 	const dispatch = useAppDispatch()
-	const [count, setCount] = useState(quantity) 
+	const [count, setCount] = useState(quantity)
+	const [deleted, setDeleted] = useState(false) // State to track if the item is deleted
 
-	
 	useEffect(() => {
 		setCount(quantity)
+		if (quantity === 0) {
+			setDeleted(true) // Set deleted state to true if quantity is 0
+		}
 	}, [quantity])
 
 	const handleAddClick = () => {
 		setCount(1)
-		dispatch(updateCartQuantity({ id, quantity: 1 })) 
+		dispatch(updateCartQuantity({ id, quantity: 1 }))
+		setDeleted(false) // Reset deleted state when adding back
 	}
 
 	const handleIncrement = () => {
 		setCount(prevCount => {
 			const newCount = prevCount + 1
-			dispatch(updateCartQuantity({ id, quantity: newCount })) 
+			dispatch(updateCartQuantity({ id, quantity: newCount }))
+			setDeleted(false) // Reset deleted state when incrementing
 			return newCount
 		})
 	}
@@ -52,11 +57,20 @@ const CartItem: React.FC<CartItemProps> = ({
 		setCount(prevCount => {
 			if (prevCount > 1) {
 				const newCount = prevCount - 1
-				dispatch(updateCartQuantity({ id, quantity: newCount })) 
+				dispatch(updateCartQuantity({ id, quantity: newCount }))
 				return newCount
+			} else {
+				setDeleted(true) // Set deleted state to true if count becomes 0
+				dispatch(updateCartQuantity({ id, quantity: 0 })) // Update Redux state
+				return 0 // Set count to 0
 			}
-			return 1 
 		})
+	}
+
+	const handleRestore = () => {
+		setCount(1)
+		dispatch(updateCartQuantity({ id, quantity: 1 })) // Restore quantity in Redux
+		setDeleted(false) // Reset deleted state when restoring
 	}
 
 	const isAddBtnVisible = count < 1
@@ -98,7 +112,7 @@ const CartItem: React.FC<CartItemProps> = ({
 				</div>
 			</div>
 			{deleted ? (
-				<CardBtn />
+				<CardBtn onClick={handleRestore} /> // Restore button when deleted
 			) : (
 				<div className={classes.cartControlBlock}>
 					<AddBtn
@@ -108,7 +122,11 @@ const CartItem: React.FC<CartItemProps> = ({
 					/>
 					<button
 						className={classes.cartItemDeleteBtn}
-						onClick={handleAddClick}
+						onClick={() => {
+							setCount(0)
+							setDeleted(true) // Set deleted state when deleting
+							dispatch(updateCartQuantity({ id, quantity: 0 })) // Update Redux state
+						}}
 						disabled={isAddBtnVisible}
 					>
 						Delete

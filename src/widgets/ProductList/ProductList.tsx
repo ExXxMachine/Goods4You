@@ -1,7 +1,10 @@
-import { ProductCard } from '../authWidgets'
+// src/widgets/ProductList/ProductList.tsx
+
+import React from 'react'
 import classesProductList from './ProductList.module.css'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../app/store/store'
+import { ProductCard } from '../authWidgets'
 
 interface ProductListProps {
 	error: any
