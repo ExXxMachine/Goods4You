@@ -1,25 +1,25 @@
 import React, { useState } from 'react'
-import classes from './StarRating.module.css'
-import StarIcon from '../../app/assets/StarIcon.svg'
+import classes from './StarRating.module.css' // Импортируем CSS-модули
+import StarIcon from '../../app/assets/StarIcon.svg' // Импортируем иконку звезды
 
 interface StarRatingProps {
-	rating: number 
+	rating: number
 }
 
 const StarRating: React.FC<StarRatingProps> = ({ rating: initialRating }) => {
-	const [rating, setRating] = useState<number>(initialRating)
-	const [hoveredRating, setHoveredRating] = useState<number>(0)
+	const [rating, setRating] = useState<number>(initialRating) // Устанавливаем начальный рейтинг
+	const [hoveredRating, setHoveredRating] = useState<number>(0) // Устанавливаем рейтинг при наведении
 
 	const handleClick = (value: number) => {
-		setRating(value)
+		setRating(value) // Обновляем рейтинг при клике
 	}
 
 	const handleMouseEnter = (value: number) => {
-		setHoveredRating(value)
+		setHoveredRating(value) // Обновляем рейтинг при наведении
 	}
 
 	const handleMouseLeave = () => {
-		setHoveredRating(0)
+		setHoveredRating(0) // Сбрасываем рейтинг при уходе мыши
 	}
 
 	return (

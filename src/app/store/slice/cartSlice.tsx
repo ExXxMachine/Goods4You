@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { getToken } from '../../../features/tokenService'
 
 interface CartItem {
 	id: number
@@ -8,7 +9,7 @@ interface CartItem {
 	total: number
 	discountedTotal: number
 	thumbnail: string
-	discountPercentage?: number 
+	discountPercentage?: number
 }
 
 interface CartState {
@@ -23,20 +24,19 @@ interface CartState {
 export const fetchCart = createAsyncThunk<CartState, number>(
 	'cart/fetchCart',
 	async userId => {
-		const response = await fetch(`https://dummyjson.com/carts/user/${userId}`)
+		const token = getToken()
+		const response = await fetch(`https://dummyjson.com/carts/user/${userId}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+
 		if (!response.ok) {
-			throw new Error('Error fetching cart')
+			throw new Error('Error fetching cart') // Выбрасываем ошибку
 		}
+
 		const data = await response.json()
-		const cart = data.carts[0]
-		return {
-			products: cart.products || [],
-			totalQuantity: cart.totalQuantity || 0,
-			totalProducts: cart.totalProducts || 0,
-			total: cart.total || 0,
-			discountedTotal: cart.discountedTotal || 0,
-			status: 'succeeded',
-		}
+		return data.carts[0] // Возвращаем данные корзины
 	}
 )
 
@@ -58,11 +58,10 @@ const cartSlice = createSlice({
 			action: PayloadAction<{ id: number; quantity: number }>
 		) {
 			const { id, quantity } = action.payload
-
 			const product = state.products.find(item => item.id === id)
 			if (product) {
 				product.quantity = quantity
-				product.total = product.price * quantity 
+				product.total = product.price * quantity
 				product.discountedTotal =
 					product.total * (1 - (product.discountPercentage || 0) / 100)
 

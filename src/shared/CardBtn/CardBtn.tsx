@@ -1,14 +1,14 @@
-import classesBtn from './CardBtn.module.css'
-import CardImg from '../../app/assets/card__ico.svg'
+import React from 'react'
 
 interface CardBtnProps {
-	onClick?: () => void
+	onClick: () => void
+	label?: string 
 }
 
-const CardBtn: React.FC<CardBtnProps> = ({ onClick }) => {
+const CardBtn: React.FC<CardBtnProps> = ({ onClick, label }) => {
 	return (
-		<button className={classesBtn.CardBtn} onClick={onClick} aria-label='Add to cart'>
-			<img src={CardImg} alt='cardimg' />
+		<button onClick={onClick}>
+			{label} 
 		</button>
 	)
 }
